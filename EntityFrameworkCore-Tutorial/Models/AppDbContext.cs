@@ -23,8 +23,9 @@ namespace EntityFrameworkCore_Tutorial.Models {
     /// </summary>
     public class AppDbContext : DbContext {
 
-        public virtual DbSet<Customer> Customers { get; set; } //dbset is referencing Customer to make entity framework work, 
-        public virtual DbSet<Order> Orders { get; set; } //when you dont add the class it skips over it and wont bring data back for up or down, have to reference the class you want with DbSet<>
+        public virtual DbSet<Customer> Customers { get; set; } // dbset is referencing Customer to make entity framework work, 
+        public virtual DbSet<Order> Orders { get; set; } // when you dont add the class it skips over it and wont bring data back for up or down, have to reference the PUBLIC class you want with DbSet<>
+        public virtual DbSet<Item> Items { get; set; } // adds Item class to entity framework to allow use
 
         public AppDbContext() { } // sets default values
         public AppDbContext(DbContextOptions<AppDbContext> options) // will need this for capstone project not the default one, ALWAYS for entity framework
@@ -38,7 +39,10 @@ namespace EntityFrameworkCore_Tutorial.Models {
         }
 
         protected override void OnModelCreating(ModelBuilder builder) { // not always used but in some circumstances
-
+            // makes Code unique, thru fluent api, .Net6 has an attribute for making a column unique
+            builder.Entity<Item>( // entity selects class, generic is <> selects Item class,
+                e => e.HasIndex(x => x.Code) // HasIndex makes an index,
+                        .IsUnique(true)); // IsUnique(true) gets the column to be unique
 
         }
     }   
