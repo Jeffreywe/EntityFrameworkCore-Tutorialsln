@@ -23,7 +23,8 @@ namespace EntityFrameworkCore_Tutorial.Models {
     /// </summary>
     public class AppDbContext : DbContext {
 
-        public virtual DbSet<Customer> Customers { get; set; } //dbset is referencing Customer to make entity framework work
+        public virtual DbSet<Customer> Customers { get; set; } //dbset is referencing Customer to make entity framework work, 
+        public virtual DbSet<Order> Orders { get; set; } //when you dont add the class it skips over it and wont bring data back for up or down, have to reference the class you want with DbSet<>
 
         public AppDbContext() { } // sets default values
         public AppDbContext(DbContextOptions<AppDbContext> options) // will need this for capstone project not the default one, ALWAYS for entity framework

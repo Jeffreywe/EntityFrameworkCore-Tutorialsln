@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 /// when adding a new migration put something descriptive about the new migration in the ""
 /// </summary>
 namespace EntityFrameworkCore_Tutorial.Models {
-    class Order {
+    public class Order {
 
         public int Id { get; set; } // primary key
         [Required]
