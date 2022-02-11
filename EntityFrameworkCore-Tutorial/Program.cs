@@ -19,9 +19,34 @@ namespace EntityFrameworkCore_Tutorial {
 
             AppDbContext context = new AppDbContext(); // this is creating an instance of a class, all of our interaction with the database will start with the dbcontext which is from the appdbcontext class
 
-            List<Customer> customers = context.Customers.ToList(); // makes list from Customers table and converts to list in context, customers
-            foreach(var customer in customers) { // goes thru the list and pulls customer from customers
-                Console.WriteLine($"{customer.Name}"); // lists the customer names pulled in cw string
+            var max = context.Customers.Find(1); // finds primary key 1, max
+            max.Sales += 5000; // adds 5000 to whatever the current sales is for primary key 1 which is max
+            context.SaveChanges(); // entity framework keeps track of our list
+
+            // add a new customer - insert
+            //var newCustomer = new Customer() { // creates new customer and inserts data into it, id must be 0 or entityF will think youre updating a customer
+            //    Id = 0, Name = "Kroger", Active = true,
+            //    Sales = 3000000, Updated = new DateTime(2022, 2, 11)
+            //};
+            //context.Customers.Add(newCustomer); // adds to collection
+            //context.SaveChanges(); // causes our database to get updated thru entity framework which looks for and identifies new instance and adds to database, function of entity framework, along with insert, update, delete
+
+
+            // reads all customers
+            //List<Customer> customers = context.Customers // makes list from Customers table and converts to list in context, customers
+            //                                    .Where(cust => cust.Sales < 100000) // cust represents each customer in our table, looks at Sales column of customers that are less than 100000
+            //                                    .ToList();             
+            // reads all customers, same as code written above
+            var customers = from cust in context.Customers // downside of query syntax is you cant do aggregate functions, min, max, count, avg, sum, way to use this and method syntax together
+                            //where cust.Sales < 100000 // returns all customers
+                            select cust;
+
+            // read customer by primary key
+            //var customer = context.Customers.Find(2); // find a customer with a primary key, if it doesnt find what youre looking for itll return null
+            //Console.WriteLine($"{customer.Name} {customer.Sales:c}");
+
+            foreach (var customer in customers) { // goes thru the list and pulls customer from customers
+                Console.WriteLine($"{customer.Name,-20} {customer.Sales,10:c}"); // lists the customer names pulled in cw string, and Sales formatted to currency
             }
         }
     }
