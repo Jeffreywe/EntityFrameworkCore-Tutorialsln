@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EntityFrameworkCore_Tutorial.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220211151635_Initialization")]
+    [Migration("20220211160528_Initialization")]
     partial class Initialization
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,10 +32,12 @@ namespace EntityFrameworkCore_Tutorial.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<decimal>("Sales")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(9,2)");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("datetime2");

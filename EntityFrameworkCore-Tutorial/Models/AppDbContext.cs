@@ -17,6 +17,9 @@ namespace EntityFrameworkCore_Tutorial.Models {
     /// default project selects what project you want to point to to apply the commands against
     /// migration is a c#class that can be used to create or update databases, gets the information from DbContext and uses this to follow through the commands, only lower case and rarely spaces
     /// to get the database, use, add-migration "Initialization" and hit enter, runs the command 
+    /// look at migration before you apply to the database, remove and re-add if need to make changes
+    /// to add our database to our c# sql server go to sql server obj exp in view and click on add sql server and select sqlexpress - our database 
+    /// efmmigration table in the database tells the framework what to point to when updating or removing
     /// </summary>
     public class AppDbContext : DbContext {
 
