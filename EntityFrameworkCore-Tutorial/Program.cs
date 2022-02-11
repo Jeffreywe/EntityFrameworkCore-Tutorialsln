@@ -19,9 +19,18 @@ namespace EntityFrameworkCore_Tutorial {
 
             AppDbContext context = new AppDbContext(); // this is creating an instance of a class, all of our interaction with the database will start with the dbcontext which is from the appdbcontext class
 
-            var max = context.Customers.Find(1); // finds primary key 1, max
-            max.Sales += 5000; // adds 5000 to whatever the current sales is for primary key 1 which is max
-            context.SaveChanges(); // entity framework keeps track of our list
+            //// delete a customer
+            //var amazon = context.Customers.SingleOrDefault(c => c.Name == "Amazon"); // must identify correct row before you can delete using entity framework, if theres more than 1(singleordefault) we'll get an exception, if the default finds none then youll get null
+
+            //if(amazon != null) { // if amazon not equal to null then itll get deleted, if null itll skip
+            //    context.Customers.Remove(amazon); // statement to remove selected row
+            //    context.SaveChanges();
+            //}
+
+            //// update a customer
+            //var max = context.Customers.Find(1); // finds primary key 1, max
+            //max.Sales += 5000; // adds 5000 to whatever the current sales is for primary key 1 which is max
+            //context.SaveChanges(); // entity framework keeps track of our list
 
             // add a new customer - insert
             //var newCustomer = new Customer() { // creates new customer and inserts data into it, id must be 0 or entityF will think youre updating a customer
