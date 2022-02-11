@@ -13,31 +13,47 @@ namespace EntityFrameworkCore_Tutorial {
     /// have to match up package version numbers with .net uses, in our case .Net5, verify installed properly with correct version numbers,
     /// when installing the packages make suree they go into the correct project with the correct .net version, can remove or update packages in the sltn explorer on projects
     /// to reference classes in folders in the project you have to use the namespace and .foldername to access them
-    /// same things we did in LINQ we can do thru entity framework, because entity fraemwork identifies them collections
+    /// same things we did in LINQ we can do thru entity framework, because entity framework identifies them as collections
     /// </summary>
     class Program {
         static void Main(string[] args) {
 
             AppDbContext context = new AppDbContext(); // this is creating an instance of a class, all of our interaction with the database will start with the dbcontext which is from the appdbcontext class
 
-            // add a new order for Kroger
-            var kroger = context.Customers.SingleOrDefault(c => c.Name.StartsWith("Krog")); // go thru the customers and find all the names that start with krog, if it finds it then itll bring it back if it doesnt then itll come back null
-            var order = new Order() {
-                Id = 0, Description = "3rd Order", Total = 2500, CustomerId = kroger.Id
-            };
-            // add order to list and preps to save change to database
-            context.Orders.Add(order);
-            context.SaveChanges();
-
-            // read all orders
-            var orders = context.Orders.Include(x => x.Customer).ToList(); // include() has to have an argument in it to be valid automatically fills in the primary key and foreign key
-
-            // goes thru each column in the database and returns in the Console with data
-            foreach(var o in orders) {
-                Console.WriteLine($"{o.Id,-5}{o.Description,-10}"
-                                    + $"{o.Total,-10:c} {o.Customer.Name}"); // the o.customer.name returns the name from Customer like a join
+            //***ITEMS***\\
+            var items = context.Items.ToList();
+            foreach(var i in items) { // goes thru each item in the list and,
+                i.Price = i.Price * (1 + 0.1m); // adds 10% to the Price 
             }
+            context.SaveChanges(); // before what you're wanting to bring back using the console, saves to database, after all changes you want to make are done
 
+            items = context.Items.ToList();
+            foreach (var i in items) {
+                Console.WriteLine($"{i.Id,-5} {i.Code,-10} {i.Name,-15} {i.Price,10:c}");
+            }
+            //***ITEMS***\\
+
+            //***ORDERS***\\
+            //// add a new order for Kroger
+            //var kroger = context.Customers.SingleOrDefault(c => c.Name.StartsWith("Krog")); // go thru the customers and find all the names that start with krog, if it finds it then itll bring it back if it doesnt then itll come back null
+            //var order = new Order() {
+            //    Id = 0, Description = "3rd Order", Total = 2500, CustomerId = kroger.Id
+            //};
+            //// add order to list and preps to save change to database
+            //context.Orders.Add(order);
+            //context.SaveChanges();
+
+            //// read all orders
+            //var orders = context.Orders.Include(x => x.Customer).ToList(); // include() has to have an argument in it to be valid automatically fills in the primary key and foreign key
+
+            //// goes thru each column in the database and returns in the Console with data
+            //foreach(var o in orders) {
+            //    Console.WriteLine($"{o.Id,-5}{o.Description,-10}"
+            //                        + $"{o.Total,-10:c} {o.Customer.Name}"); // the o.customer.name returns the name from Customer like a join
+            //}
+            //***ORDERS***\\
+
+            //***CUSTOMERS***\\
             //// delete a customer
             //var amazon = context.Customers.SingleOrDefault(c => c.Name == "Amazon"); // must identify correct row before you can delete using entity framework, if theres more than 1(singleordefault) we'll get an exception, if the default finds none then youll get null
 
@@ -52,7 +68,7 @@ namespace EntityFrameworkCore_Tutorial {
             //context.SaveChanges(); // entity framework keeps track of our list
 
             // add a new customer - insert
-            //var newCustomer = new Customer() { // creates new customer and inserts data into it, id must be 0 or entityF will think youre updating a customer
+            //var newCustomer = new Customer() { // creates new customer and inserts data into it, id must be 0 or entityFrWo will think youre updating a customer
             //    Id = 0, Name = "Kroger", Active = true,
             //    Sales = 3000000, Updated = new DateTime(2022, 2, 11)
             //};
@@ -66,8 +82,8 @@ namespace EntityFrameworkCore_Tutorial {
             //                                    .ToList();             
             // reads all customers, same as code written above
             //var customers = from cust in context.Customers // downside of query syntax is you cant do aggregate functions, min, max, count, avg, sum, way to use this and method syntax together
-                            //where cust.Sales < 100000 // returns all customers
-                            //select cust;
+            //where cust.Sales < 100000 // returns all customers
+            //select cust;
 
             // read customer by primary key
             //var customer = context.Customers.Find(2); // find a customer with a primary key, if it doesnt find what youre looking for itll return null
@@ -76,6 +92,7 @@ namespace EntityFrameworkCore_Tutorial {
             //foreach (var customer in customers) { // goes thru the list and pulls customer from customers
             //    Console.WriteLine($"{customer.Name,-20} {customer.Sales,10:c}"); // lists the customer names pulled in cw string, and Sales formatted to currency
             //}
+            //***CUSTOMERS***\\
         }
     }
 }
